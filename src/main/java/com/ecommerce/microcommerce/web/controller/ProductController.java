@@ -2,6 +2,7 @@ package com.ecommerce.microcommerce.web.controller;
 
 import com.ecommerce.microcommerce.dao.ProductDao;
 import com.ecommerce.microcommerce.model.Product;
+import com.ecommerce.microcommerce.web.exceptions.ProduitGratuitException;
 import com.ecommerce.microcommerce.web.exceptions.ProduitIntrouvableException;
 import com.fasterxml.jackson.databind.ser.FilterProvider;
 import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
@@ -110,7 +111,11 @@ public class ProductController {
         Map<String,Integer> margePro = new HashMap<>();
         productDao.findAll().forEach(product->{
             margePro.put(product.toString() , Math.abs(product.getPrix()-product.getPrixAchat()));
+
+            if(Math.abs(product.getPrix())==0) throw new ProduitGratuitException("Le Produit n'est pas gratuit");
         });
+
+
         return margePro;
     }
 
