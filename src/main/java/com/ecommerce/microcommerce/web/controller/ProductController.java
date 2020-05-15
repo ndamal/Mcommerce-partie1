@@ -111,8 +111,20 @@ public class ProductController {
         Map<String,Integer> margePro = new HashMap<>();
         productDao.findAll().forEach(product->{
             margePro.put(product.toString() , Math.abs(product.getPrix()-product.getPrixAchat()));
+        });
 
-            if(Math.abs(product.getPrix())==0) throw new ProduitGratuitException("Le Produit n'est pas gratuit");
+
+        return margePro;
+    }
+
+    @GetMapping("/AdminProduitsPv")
+    public Map<String,Integer> validationPrixDeVente(){
+        Map<String,Integer> margePro = new HashMap<>();
+        productDao.findAll().forEach(product->{
+            margePro.put(product.toString() , Math.abs(product.getPrix()-product.getPrixAchat()));
+
+            if(Math.abs(product.getPrix())==0) throw new ProduitGratuitException("Le Produit id : " +product.getId()+ "" +
+                    " et de nom :"+ product.getNom()+"+  n'est pas gratuit");
         });
 
 
